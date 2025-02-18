@@ -32,6 +32,7 @@ module Network.Google.Data.JSON
     ) where
 
 import           Data.Aeson
+import qualified Data.Aeson.KeyMap as KM
 import           Data.Aeson.Types
 import           Data.Data
 import           Data.HashMap.Strict (HashMap)
@@ -63,7 +64,7 @@ instance (FromJSON a, FromHttpApiData a) => FromJSON (Textual a) where
 instance ToHttpApiData a => ToJSON (Textual a) where
     toJSON (Textual x) = String (toQueryParam x)
 
-parseJSONObject :: FromJSON a => HashMap Text Value -> Parser a
+parseJSONObject :: FromJSON a => KM.KeyMap Value -> Parser a
 parseJSONObject = parseJSON . Object
 
 parseJSONText :: FromHttpApiData a => String -> Value -> Parser a
