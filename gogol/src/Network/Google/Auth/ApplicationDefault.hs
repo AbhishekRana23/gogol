@@ -162,7 +162,9 @@ fromJSONCredentials bs = do
         (Left xe, Left ye) -> Left $
               "Failed parsing service_account: " ++ xe ++
             ", Failed parsing authorized_user: " ++ ye
-        _                  -> x <|> y
+        (Right xr, _) -> Right xr  -- If x is Right, use it
+        (_, Right yr) -> Right yr  -- Otherwise, if y is Right, use it
+        _ -> Left $ "fromJSONCredentials - invalid case match"
 
 getConfigDirectory :: MonadIO m => m FilePath
 getConfigDirectory = do
